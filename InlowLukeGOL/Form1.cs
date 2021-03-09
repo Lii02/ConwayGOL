@@ -43,6 +43,23 @@ namespace InlowLukeGOL
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
         }
 
+        private void UpdateLivingText()
+        {
+            int living = 0;
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    if(universe[x,y])
+                    {
+                        living++;
+                    }
+                }
+            }
+
+            toolStripStatusLabelLiving.Text = "Living = " + living.ToString();
+        }
+
         private int CheckNeighbor(int x, int y)
         {
             if((x >= 0 && y >= 0) && (x < universeX && y < universeY))
@@ -97,6 +114,7 @@ namespace InlowLukeGOL
         private void Timer_Tick(object sender, EventArgs e)
         {
             NextGeneration();
+            UpdateLivingText();
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
@@ -159,6 +177,7 @@ namespace InlowLukeGOL
 
                 // Toggle the cell's state
                 universe[x, y] = !universe[x, y];
+                UpdateLivingText();
 
                 // Tell Windows you need to repaint
                 graphicsPanel1.Invalidate();
@@ -216,13 +235,13 @@ namespace InlowLukeGOL
                     universe[x, y] = (random.NextDouble() >= 0.5);
                 }
             }
+            UpdateLivingText();
 
             graphicsPanel1.Invalidate();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void saveButton_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

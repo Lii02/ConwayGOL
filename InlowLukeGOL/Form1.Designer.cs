@@ -59,6 +59,7 @@ namespace InlowLukeGOL
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelGenerations = new System.Windows.Forms.ToolStripStatusLabel();
             this.graphicsPanel1 = new InlowLukeGOL.GraphicsPanel();
+            this.toolStripStatusLabelLiving = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -247,7 +248,7 @@ namespace InlowLukeGOL
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(23, 22);
             this.saveButton.Text = "&Save";
-            this.saveButton.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // toolStripSeparator6
             // 
@@ -287,7 +288,8 @@ namespace InlowLukeGOL
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabelGenerations});
+            this.toolStripStatusLabelGenerations,
+            this.toolStripStatusLabelLiving});
             this.statusStrip1.Location = new System.Drawing.Point(0, 323);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(573, 22);
@@ -310,6 +312,12 @@ namespace InlowLukeGOL
             this.graphicsPanel1.TabIndex = 3;
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
+            // 
+            // toolStripStatusLabelLiving
+            // 
+            this.toolStripStatusLabelLiving.Name = "toolStripStatusLabelLiving";
+            this.toolStripStatusLabelLiving.Size = new System.Drawing.Size(59, 17);
+            this.toolStripStatusLabelLiving.Text = "Living = 0";
             // 
             // Form1
             // 
@@ -365,6 +373,7 @@ namespace InlowLukeGOL
         private System.Windows.Forms.ToolStripButton nextButton;
         private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem randomSeedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLiving;
     }
 }
 
