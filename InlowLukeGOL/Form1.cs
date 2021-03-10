@@ -17,6 +17,7 @@ namespace InlowLukeGOL
         const int universeY = 30;
         bool[,] universe = new bool[universeX, universeY];
         bool[,] scratchPad = new bool[universeX, universeY];
+        const float PI = 3.14159265359f;
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -195,6 +196,7 @@ namespace InlowLukeGOL
                 }
             }
             UpdateGenerationText();
+            UpdateLivingText();
             timer.Stop();
             graphicsPanel1.Invalidate();
         }
@@ -212,6 +214,7 @@ namespace InlowLukeGOL
         private void nextButton_Click(object sender, EventArgs e)
         {
             NextGeneration();
+            UpdateLivingText();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -242,6 +245,57 @@ namespace InlowLukeGOL
 
         private void saveButton_Click(object sender, EventArgs e)
         {
+        }
+
+        private void fillAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    universe[x, y] = true;
+                }
+            }
+            UpdateLivingText();
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fillCircleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int r = 10;
+
+            for (int i = 0; i < 360; i++)
+            {
+                int pos = r + (r / 2) - 1;
+                int x1 = (int)(r * Math.Cos(i * PI / 180));
+                int y1 = (int)(r * Math.Sin(i * PI / 180));
+                universe[pos + x1, pos + y1] = true;
+            }
+            UpdateLivingText();
+            graphicsPanel1.Invalidate();
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog color = new ColorDialog();
+            color.ShowDialog();
+            gridColor = color.Color;
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fGColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog color = new ColorDialog();
+            color.ShowDialog();
+            cellColor = color.Color;
+            graphicsPanel1.Invalidate();
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult res = MessageBox.Show("Conway's Game of Life\nMade by Luke Inlow 2021", "About", MessageBoxButtons.OK);
+            if (res == DialogResult.OK)
+                return;
         }
     }
 }

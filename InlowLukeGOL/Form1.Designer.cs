@@ -48,6 +48,7 @@ namespace InlowLukeGOL
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.randomSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fillAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -58,8 +59,11 @@ namespace InlowLukeGOL
             this.nextButton = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelGenerations = new System.Windows.Forms.ToolStripStatusLabel();
-            this.graphicsPanel1 = new InlowLukeGOL.GraphicsPanel();
             this.toolStripStatusLabelLiving = new System.Windows.Forms.ToolStripStatusLabel();
+            this.fillCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.colorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.graphicsPanel1 = new InlowLukeGOL.GraphicsPanel();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -160,14 +164,17 @@ namespace InlowLukeGOL
             // 
             // customizeToolStripMenuItem
             // 
+            this.customizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.colorToolStripMenuItem,
+            this.fGColorToolStripMenuItem});
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.customizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.customizeToolStripMenuItem.Text = "&Customize";
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(130, 22);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
             // helpToolStripMenuItem
@@ -182,21 +189,24 @@ namespace InlowLukeGOL
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(113, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // randomToolStripMenuItem
             // 
             this.randomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.randomSeedToolStripMenuItem});
+            this.randomSeedToolStripMenuItem,
+            this.fillAllToolStripMenuItem,
+            this.fillCircleToolStripMenuItem});
             this.randomToolStripMenuItem.Name = "randomToolStripMenuItem";
-            this.randomToolStripMenuItem.Size = new System.Drawing.Size(64, 20);
-            this.randomToolStripMenuItem.Text = "Random";
+            this.randomToolStripMenuItem.Size = new System.Drawing.Size(34, 20);
+            this.randomToolStripMenuItem.Text = "Fill";
             // 
             // randomSeedToolStripMenuItem
             // 
@@ -204,6 +214,13 @@ namespace InlowLukeGOL
             this.randomSeedToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.randomSeedToolStripMenuItem.Text = "From Random Seed";
             this.randomSeedToolStripMenuItem.Click += new System.EventHandler(this.randomSeedToolStripMenuItem_Click);
+            // 
+            // fillAllToolStripMenuItem
+            // 
+            this.fillAllToolStripMenuItem.Name = "fillAllToolStripMenuItem";
+            this.fillAllToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.fillAllToolStripMenuItem.Text = "Fill All";
+            this.fillAllToolStripMenuItem.Click += new System.EventHandler(this.fillAllToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -302,6 +319,33 @@ namespace InlowLukeGOL
             this.toolStripStatusLabelGenerations.Size = new System.Drawing.Size(90, 17);
             this.toolStripStatusLabelGenerations.Text = "Generations = 0";
             // 
+            // toolStripStatusLabelLiving
+            // 
+            this.toolStripStatusLabelLiving.Name = "toolStripStatusLabelLiving";
+            this.toolStripStatusLabelLiving.Size = new System.Drawing.Size(59, 17);
+            this.toolStripStatusLabelLiving.Text = "Living = 0";
+            // 
+            // fillCircleToolStripMenuItem
+            // 
+            this.fillCircleToolStripMenuItem.Name = "fillCircleToolStripMenuItem";
+            this.fillCircleToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.fillCircleToolStripMenuItem.Text = "Fill Circle";
+            this.fillCircleToolStripMenuItem.Click += new System.EventHandler(this.fillCircleToolStripMenuItem_Click);
+            // 
+            // colorToolStripMenuItem
+            // 
+            this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.colorToolStripMenuItem.Text = "BG Color";
+            this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
+            // 
+            // fGColorToolStripMenuItem
+            // 
+            this.fGColorToolStripMenuItem.Name = "fGColorToolStripMenuItem";
+            this.fGColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fGColorToolStripMenuItem.Text = "FG Color";
+            this.fGColorToolStripMenuItem.Click += new System.EventHandler(this.fGColorToolStripMenuItem_Click);
+            // 
             // graphicsPanel1
             // 
             this.graphicsPanel1.BackColor = System.Drawing.SystemColors.Window;
@@ -312,12 +356,6 @@ namespace InlowLukeGOL
             this.graphicsPanel1.TabIndex = 3;
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
-            // 
-            // toolStripStatusLabelLiving
-            // 
-            this.toolStripStatusLabelLiving.Name = "toolStripStatusLabelLiving";
-            this.toolStripStatusLabelLiving.Size = new System.Drawing.Size(59, 17);
-            this.toolStripStatusLabelLiving.Text = "Living = 0";
             // 
             // Form1
             // 
@@ -374,6 +412,10 @@ namespace InlowLukeGOL
         private System.Windows.Forms.ToolStripMenuItem randomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem randomSeedToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabelLiving;
+        private System.Windows.Forms.ToolStripMenuItem fillAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fillCircleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fGColorToolStripMenuItem;
     }
 }
 
