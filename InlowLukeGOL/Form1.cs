@@ -13,11 +13,12 @@ namespace InlowLukeGOL
     public partial class Form1 : Form
     {
         // The universe array
-        const int universeX = 30;
-        const int universeY = 30;
-        bool[,] universe = new bool[universeX, universeY];
-        bool[,] scratchPad = new bool[universeX, universeY];
+        int universeX = 30;
+        int universeY = 30;
+        bool[,] universe;
+        bool[,] scratchPad;
         const float PI = 3.14159265359f;
+        int timeInterval = 100;
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -33,8 +34,11 @@ namespace InlowLukeGOL
         {
             InitializeComponent();
 
+            this.universe = new bool[universeX, universeY];
+            this.scratchPad = new bool[universeX, universeY];
+
             // Setup the timer
-            timer.Interval = 100; // milliseconds
+            timer.Interval = timeInterval; // milliseconds
             timer.Tick += Timer_Tick;
             timer.Enabled = false; // start timer running
         }
@@ -260,6 +264,7 @@ namespace InlowLukeGOL
             graphicsPanel1.Invalidate();
         }
 
+        // I added this just for fun
         private void fillCircleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int r = 10;
@@ -278,17 +283,21 @@ namespace InlowLukeGOL
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog color = new ColorDialog();
-            color.ShowDialog();
-            gridColor = color.Color;
-            graphicsPanel1.Invalidate();
+            if (DialogResult.OK == color.ShowDialog())
+            {
+                gridColor = color.Color;
+                graphicsPanel1.Invalidate();
+            }
         }
 
         private void fGColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog color = new ColorDialog();
-            color.ShowDialog();
-            cellColor = color.Color;
-            graphicsPanel1.Invalidate();
+            if(DialogResult.OK == color.ShowDialog())
+            {
+                cellColor = color.Color;
+                graphicsPanel1.Invalidate();
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -296,6 +305,40 @@ namespace InlowLukeGOL
             DialogResult res = MessageBox.Show("Conway's Game of Life\nMade by Luke Inlow 2021", "About", MessageBoxButtons.OK);
             if (res == DialogResult.OK)
                 return;
+        }
+
+        private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int oldX = universeX;
+            int oldY = universeY;
+
+            PropertiesDialog props = new PropertiesDialog(oldX, oldY, timeInterval);
+
+            if (DialogResult.OK == props.ShowDialog())
+            {
+                this.universeX = props.universeX;
+                this.universeY = props.universeY;
+
+                // Resize the arrays
+                this.scratchPad = new bool[universeX, universeY];
+
+                bool[,] new_universe = new bool[universeX, universeY];
+                for(int i = 0; i < oldX; i++)
+                {
+                    for (int j = 0; j < oldY; j++)
+                    {
+                        new_universe[i, j] = universe[i, j];
+                    }
+                }
+                this.universe = new_universe;
+
+                this.timeInterval = props.timeInterval;
+                timer.Interval = timeInterval;
+
+                props.Dispose();
+            }
+
+            graphicsPanel1.Invalidate();
         }
     }
 }
