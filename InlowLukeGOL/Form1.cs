@@ -111,6 +111,7 @@ namespace InlowLukeGOL
                     universe[x, y] = scratchPad[x, y];
                 }
             }
+            UpdateLivingText();
 
             graphicsPanel1.Invalidate();
         }
@@ -119,7 +120,6 @@ namespace InlowLukeGOL
         private void Timer_Tick(object sender, EventArgs e)
         {
             NextGeneration();
-            UpdateLivingText();
         }
 
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
@@ -336,6 +336,29 @@ namespace InlowLukeGOL
                 timer.Interval = timeInterval;
 
                 props.Dispose();
+            }
+
+            graphicsPanel1.Invalidate();
+        }
+
+        private void fromSeedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RandomDialog randomDialog = new RandomDialog();
+
+            if(randomDialog.ShowDialog() == DialogResult.OK)
+            {
+                Random random = new Random(randomDialog.seed);
+
+                for (int y = 0; y < universe.GetLength(1); y++)
+                {
+                    for (int x = 0; x < universe.GetLength(0); x++)
+                    {
+                        universe[x, y] = (random.NextDouble() >= 0.5);
+                    }
+                }
+                UpdateLivingText();
+
+                graphicsPanel1.Invalidate();
             }
 
             graphicsPanel1.Invalidate();

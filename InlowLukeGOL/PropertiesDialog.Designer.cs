@@ -114,6 +114,7 @@ namespace InlowLukeGOL
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numericUpDown4);
             this.Controls.Add(this.numericUpDown3);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "PropertiesDialog";
             this.Text = "Properties";
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
