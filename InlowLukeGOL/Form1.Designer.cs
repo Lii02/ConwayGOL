@@ -52,6 +52,7 @@ namespace InlowLukeGOL
             this.randomSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillCircleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fromSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.newToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.openToolStripButton = new System.Windows.Forms.ToolStripButton();
@@ -63,8 +64,9 @@ namespace InlowLukeGOL
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabelGenerations = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabelLiving = new System.Windows.Forms.ToolStripStatusLabel();
+            this.bGColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.graphicsPanel1 = new InlowLukeGOL.GraphicsPanel();
-            this.fromSeedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -167,7 +169,9 @@ namespace InlowLukeGOL
             // 
             this.customizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.colorToolStripMenuItem,
-            this.fGColorToolStripMenuItem});
+            this.fGColorToolStripMenuItem,
+            this.bGColorToolStripMenuItem,
+            this.toggleGridToolStripMenuItem});
             this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
             this.customizeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.customizeToolStripMenuItem.Text = "&Customize";
@@ -175,14 +179,14 @@ namespace InlowLukeGOL
             // colorToolStripMenuItem
             // 
             this.colorToolStripMenuItem.Name = "colorToolStripMenuItem";
-            this.colorToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
-            this.colorToolStripMenuItem.Text = "BG Color";
+            this.colorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.colorToolStripMenuItem.Text = "Grid Color";
             this.colorToolStripMenuItem.Click += new System.EventHandler(this.colorToolStripMenuItem_Click);
             // 
             // fGColorToolStripMenuItem
             // 
             this.fGColorToolStripMenuItem.Name = "fGColorToolStripMenuItem";
-            this.fGColorToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.fGColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fGColorToolStripMenuItem.Text = "FG Color";
             this.fGColorToolStripMenuItem.Click += new System.EventHandler(this.fGColorToolStripMenuItem_Click);
             // 
@@ -205,12 +209,12 @@ namespace InlowLukeGOL
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(113, 6);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -228,23 +232,30 @@ namespace InlowLukeGOL
             // randomSeedToolStripMenuItem
             // 
             this.randomSeedToolStripMenuItem.Name = "randomSeedToolStripMenuItem";
-            this.randomSeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.randomSeedToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.randomSeedToolStripMenuItem.Text = "From Random Seed";
             this.randomSeedToolStripMenuItem.Click += new System.EventHandler(this.randomSeedToolStripMenuItem_Click);
             // 
             // fillAllToolStripMenuItem
             // 
             this.fillAllToolStripMenuItem.Name = "fillAllToolStripMenuItem";
-            this.fillAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillAllToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.fillAllToolStripMenuItem.Text = "Fill All";
             this.fillAllToolStripMenuItem.Click += new System.EventHandler(this.fillAllToolStripMenuItem_Click);
             // 
             // fillCircleToolStripMenuItem
             // 
             this.fillCircleToolStripMenuItem.Name = "fillCircleToolStripMenuItem";
-            this.fillCircleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fillCircleToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.fillCircleToolStripMenuItem.Text = "Fill Circle";
             this.fillCircleToolStripMenuItem.Click += new System.EventHandler(this.fillCircleToolStripMenuItem_Click);
+            // 
+            // fromSeedToolStripMenuItem
+            // 
+            this.fromSeedToolStripMenuItem.Name = "fromSeedToolStripMenuItem";
+            this.fromSeedToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.fromSeedToolStripMenuItem.Text = "From Seed ";
+            this.fromSeedToolStripMenuItem.Click += new System.EventHandler(this.fromSeedToolStripMenuItem_Click);
             // 
             // toolStrip1
             // 
@@ -349,6 +360,13 @@ namespace InlowLukeGOL
             this.toolStripStatusLabelLiving.Size = new System.Drawing.Size(59, 17);
             this.toolStripStatusLabelLiving.Text = "Living = 0";
             // 
+            // bGColorToolStripMenuItem
+            // 
+            this.bGColorToolStripMenuItem.Name = "bGColorToolStripMenuItem";
+            this.bGColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bGColorToolStripMenuItem.Text = "BG Color";
+            this.bGColorToolStripMenuItem.Click += new System.EventHandler(this.bGColorToolStripMenuItem_Click);
+            // 
             // graphicsPanel1
             // 
             this.graphicsPanel1.BackColor = System.Drawing.SystemColors.Window;
@@ -360,12 +378,12 @@ namespace InlowLukeGOL
             this.graphicsPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.graphicsPanel1_Paint);
             this.graphicsPanel1.MouseClick += new System.Windows.Forms.MouseEventHandler(this.graphicsPanel1_MouseClick);
             // 
-            // fromSeedToolStripMenuItem
+            // toggleGridToolStripMenuItem
             // 
-            this.fromSeedToolStripMenuItem.Name = "fromSeedToolStripMenuItem";
-            this.fromSeedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.fromSeedToolStripMenuItem.Text = "From Seed ";
-            this.fromSeedToolStripMenuItem.Click += new System.EventHandler(this.fromSeedToolStripMenuItem_Click);
+            this.toggleGridToolStripMenuItem.Name = "toggleGridToolStripMenuItem";
+            this.toggleGridToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.toggleGridToolStripMenuItem.Text = "Toggle Grid";
+            this.toggleGridToolStripMenuItem.Click += new System.EventHandler(this.toggleGridToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -427,6 +445,8 @@ namespace InlowLukeGOL
         private System.Windows.Forms.ToolStripMenuItem colorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fGColorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fromSeedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bGColorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toggleGridToolStripMenuItem;
     }
 }
 

@@ -19,6 +19,7 @@ namespace InlowLukeGOL
         bool[,] scratchPad;
         const float PI = 3.14159265359f;
         int timeInterval = 100;
+        bool showGrid;
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -36,6 +37,7 @@ namespace InlowLukeGOL
 
             this.universe = new bool[universeX, universeY];
             this.scratchPad = new bool[universeX, universeY];
+            this.showGrid = true;
 
             // Setup the timer
             timer.Interval = timeInterval; // milliseconds
@@ -126,12 +128,17 @@ namespace InlowLukeGOL
         {
             // Calculate the width and height of each cell in pixels
             // CELL WIDTH = WINDOW WIDTH / NUMBER OF CELLS IN X
-            int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
+            float cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
             // CELL HEIGHT = WINDOW HEIGHT / NUMBER OF CELLS IN Y
-            int cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+            float cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
 
             // A Pen for drawing the grid lines (color, width)
-            Pen gridPen = new Pen(gridColor, 1);
+            Pen gridPen;
+            float penWidth = 1.0f;
+            if (showGrid)
+                gridPen = new Pen(gridColor, penWidth);
+            else
+                gridPen = new Pen(graphicsPanel1.BackColor, penWidth);
 
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
@@ -143,7 +150,7 @@ namespace InlowLukeGOL
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
                     // A rectangle to represent each cell in pixels
-                    Rectangle cellRect = Rectangle.Empty;
+                    RectangleF cellRect = RectangleF.Empty;
                     cellRect.X = x * cellWidth;
                     cellRect.Y = y * cellHeight;
                     cellRect.Width = cellWidth;
@@ -361,6 +368,22 @@ namespace InlowLukeGOL
                 graphicsPanel1.Invalidate();
             }
 
+            graphicsPanel1.Invalidate();
+        }
+
+        private void bGColorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ColorDialog color = new ColorDialog();
+            if (DialogResult.OK == color.ShowDialog())
+            {
+                graphicsPanel1.BackColor = color.Color;
+                graphicsPanel1.Invalidate();
+            }
+        }
+
+        private void toggleGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.showGrid = !showGrid;
             graphicsPanel1.Invalidate();
         }
     }
