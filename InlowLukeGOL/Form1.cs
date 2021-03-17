@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,6 +22,8 @@ namespace InlowLukeGOL
         int timeInterval = 100;
         bool showGrid;
         bool showNeighborCount;
+        bool saved;
+        string savePath;
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -40,6 +43,7 @@ namespace InlowLukeGOL
             this.scratchPad = new bool[universeX, universeY];
             this.showGrid = true;
             this.showNeighborCount = true;
+            this.saved = false;
 
             // Setup the timer
             timer.Interval = timeInterval; // milliseconds
@@ -170,10 +174,11 @@ namespace InlowLukeGOL
                         e.Graphics.DrawRectangle(gridPen, cellRect);
                     }
 
-                    if(showNeighborCount)
+                    int n = GetNeighborCount(x, y);
+                    // Show neighbor count if it's above 0
+                    if(showNeighborCount && (n > 0))
                     {
-                        int n = GetNeighborCount(x, y);
-                        e.Graphics.DrawString(n.ToString(), labelFont, labelBrush, new PointF(cellRect.X + 5, cellRect.Y + 5));
+                        e.Graphics.DrawString(n.ToString(), labelFont, labelBrush, new PointF(cellRect.X + 5, cellRect.Y));
                     }
                 }
             }
@@ -207,7 +212,7 @@ namespace InlowLukeGOL
             }
         }
 
-        private void newToolStripButton_Click(object sender, EventArgs e)
+        private void ClearUniverse()
         {
             generations = 0;
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -221,6 +226,11 @@ namespace InlowLukeGOL
             UpdateLivingText();
             timer.Stop();
             graphicsPanel1.Invalidate();
+        }
+
+        private void newToolStripButton_Click(object sender, EventArgs e)
+        {
+            ClearUniverse();
         }
 
         private void runToolStripButton_Click(object sender, EventArgs e)
@@ -246,7 +256,7 @@ namespace InlowLukeGOL
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            newToolStripButton_Click(sender, e);
+            ClearUniverse();
         }
 
         private void randomSeedToolStripMenuItem_Click(object sender, EventArgs e)
@@ -265,8 +275,51 @@ namespace InlowLukeGOL
             graphicsPanel1.Invalidate();
         }
 
+        StringBuilder CreateStringBuilder()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            for (int y = 0; y < universe.GetLength(1); y++)
+            {
+                for (int x = 0; x < universe.GetLength(0); x++)
+                {
+                    char c;
+                    if (universe[x, y] == true)
+                        c = 'O';
+                    else
+                        c = '.';
+                    builder.Append(c);
+                }
+                builder.Append('\n');
+            }
+            return builder;
+        }
+
+        private void SaveUniverse(bool saveAs = false)
+        {
+            if(!saved || saveAs)
+            {
+                SaveFileDialog save = new SaveFileDialog();
+                save.DefaultExt = ".cells";
+                save.Filter = "Cell file (.cells)|*.cells";
+                save.RestoreDirectory = true;
+
+                if (save.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(save.FileName, CreateStringBuilder().ToString());
+                    this.savePath = save.FileName;
+                    this.saved = true;
+                }
+            }
+            else
+            {
+                File.WriteAllText(savePath, CreateStringBuilder().ToString());
+            }
+        }
+
         private void saveButton_Click(object sender, EventArgs e)
         {
+            SaveUniverse();
         }
 
         private void fillAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -402,6 +455,16 @@ namespace InlowLukeGOL
         {
             this.showNeighborCount = !showNeighborCount;
             graphicsPanel1.Invalidate();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveUniverse();
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveUniverse(true);
         }
     }
 }
