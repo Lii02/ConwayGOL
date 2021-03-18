@@ -22,8 +22,8 @@ namespace InlowLukeGOL
         int timeInterval = 100;
         bool showGrid;
         bool showNeighborCount;
-        bool saved;
-        string savePath;
+        bool loaded;
+        string loadPath;
 
         // Drawing colors
         Color gridColor = Color.Black;
@@ -43,7 +43,7 @@ namespace InlowLukeGOL
             this.scratchPad = new bool[universeX, universeY];
             this.showGrid = true;
             this.showNeighborCount = true;
-            this.saved = false;
+            this.loaded = false;
 
             // Setup the timer
             timer.Interval = timeInterval; // milliseconds
@@ -138,16 +138,13 @@ namespace InlowLukeGOL
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             // Calculate the width and height of each cell in pixels
-            // CELL WIDTH = WINDOW WIDTH / NUMBER OF CELLS IN X
-            int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-            // CELL HEIGHT = WINDOW HEIGHT / NUMBER OF CELLS IN Y
-            int cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+            Size cellSize = new Size(graphicsPanel1.ClientSize.Width / universeX, graphicsPanel1.ClientSize.Height / universeY);
             // A Pen for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1.0f);
             // A Brush for filling living cells interiors (color)
             Brush cellBrush = new SolidBrush(cellColor);
             Brush labelBrush = new SolidBrush(Color.Red);
-            Font labelFont = new Font("Arial", cellHeight / 2);
+            Font labelFont = new Font("Arial", cellSize.Width / 3);
 
             // Iterate through the universe in the y, top to bottom
             for (int y = 0; y < universe.GetLength(1); y++)
@@ -155,15 +152,15 @@ namespace InlowLukeGOL
                 // Iterate through the universe in the x, left to right
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
+                    bool cell = universe[x, y];
                     // A rectangle to represent each cell in pixels
                     Rectangle cellRect = Rectangle.Empty;
-                    cellRect.X = x * cellWidth;
-                    cellRect.Y = y * cellHeight;
-                    cellRect.Width = cellWidth;
-                    cellRect.Height = cellHeight;
+                    cellRect.X = x * cellSize.Width;
+                    cellRect.Y = y * cellSize.Height;
+                    cellRect.Size = cellSize;
 
                     // Fill the cell with a brush if alive
-                    if (universe[x, y] == true)
+                    if (cell == true)
                     {
                         e.Graphics.FillRectangle(cellBrush, cellRect);
                     }
@@ -171,10 +168,10 @@ namespace InlowLukeGOL
                     if(showGrid)
                     {
                         // Outline the cell with a pen
-                        e.Graphics.DrawRectangle(gridPen, cellRect);
+                        e.Graphics.DrawRectangle(gridPen, cellRect.X, cellRect.Y, cellRect.Width, cellRect.Height);
                     }
 
-                    int n = GetNeighborCount(x, y);
+                    int n = GetNeighborCount((int)x, (int)y);
                     // Show neighbor count if it's above 0
                     if(showNeighborCount && (n > 0))
                     {
@@ -222,6 +219,7 @@ namespace InlowLukeGOL
                     universe[x, y] = false;
                 }
             }
+            this.loaded = false;
             UpdateGenerationText();
             UpdateLivingText();
             timer.Stop();
@@ -295,9 +293,47 @@ namespace InlowLukeGOL
             return builder;
         }
 
+        bool[,] LoadFromString(string src)
+        {
+            src = src.Trim();
+            string[] result = src.Split(new[] { '\r', '\n' });
+            int h = result.Length;
+
+            int w = 0;
+            int comments = 0;
+            for(int i = 0; i < result.Length; i++)
+            {
+                string line = result[i];
+                if (line[0] == '!')
+                {
+                    comments++;
+                    continue;
+                }
+                w++;
+            }
+            h -= comments;
+            this.universeX = w;
+            this.universeY = h;
+            this.universe = new bool[w, h];
+            this.scratchPad = new bool[w, h];
+
+            // Comments should be at the beginning of the file
+            for(int y = comments; y < h; y++)
+            {
+                string line = result[y - comments];
+                for(int x = 0; x < line.Length; x++)
+                {
+                    if (line[x] == '.') universe[x, y] = false;
+                    else if (line[x] == 'O') universe[x, y] = true;
+                }
+            }
+
+            return universe;
+        }
+
         private void SaveUniverse(bool saveAs = false)
         {
-            if(!saved || saveAs)
+            if(!loaded || saveAs)
             {
                 SaveFileDialog save = new SaveFileDialog();
                 save.DefaultExt = ".cells";
@@ -307,13 +343,30 @@ namespace InlowLukeGOL
                 if (save.ShowDialog() == DialogResult.OK)
                 {
                     File.WriteAllText(save.FileName, CreateStringBuilder().ToString());
-                    this.savePath = save.FileName;
-                    this.saved = true;
+                    this.loadPath = save.FileName;
+                    this.loaded = true;
                 }
             }
             else
             {
-                File.WriteAllText(savePath, CreateStringBuilder().ToString());
+                File.WriteAllText(loadPath, CreateStringBuilder().ToString());
+            }
+        }
+
+        private void OpenUniverse()
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.DefaultExt = ".cells";
+            open.Filter = "Cell file (.cells)|*.cells";
+            open.RestoreDirectory = true;
+
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                this.universe = LoadFromString(File.ReadAllText(open.FileName));
+                this.loadPath = open.FileName;
+                this.loaded = true;
+                UpdateLivingText();
+                graphicsPanel1.Invalidate();
             }
         }
 
@@ -465,6 +518,16 @@ namespace InlowLukeGOL
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveUniverse(true);
+        }
+
+        private void openToolStripButton_Click(object sender, EventArgs e)
+        {
+            OpenUniverse();
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenUniverse();
         }
     }
 }
