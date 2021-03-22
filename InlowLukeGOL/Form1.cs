@@ -14,8 +14,8 @@ namespace InlowLukeGOL
     public partial class Form1 : Form
     {
         // The universe array
-        int universeX = 30;
-        int universeY = 30;
+        int universeX;
+        int universeY;
         bool[,] universe;
         bool[,] scratchPad;
         const float PI = 3.14159265359f;
@@ -26,8 +26,8 @@ namespace InlowLukeGOL
         string loadPath;
 
         // Drawing colors
-        Color gridColor = Color.Black;
-        Color cellColor = Color.Gray;
+        Color gridColor;
+        Color cellColor;
 
         // The Timer class
         Timer timer = new Timer();
@@ -38,6 +38,8 @@ namespace InlowLukeGOL
         public Form1()
         {
             InitializeComponent();
+
+            loadSettings();
 
             this.universe = new bool[universeX, universeY];
             this.scratchPad = new bool[universeX, universeY];
@@ -51,26 +53,41 @@ namespace InlowLukeGOL
             timer.Enabled = false; // start timer running
         }
 
+        private void loadSettings()
+        {
+            this.gridColor = Properties.Settings.Default.gridColor;
+            this.cellColor = Properties.Settings.Default.cellColor;
+            this.graphicsPanel1.BackColor = Properties.Settings.Default.backColor;
+            this.universeX = Properties.Settings.Default.universeX;
+            this.universeY = Properties.Settings.Default.universeY;
+
+            this.timeInterval = Properties.Settings.Default.timeInterval;
+        }
+
         private void UpdateGenerationText()
         {
             toolStripStatusLabelGenerations.Text = "Generations = " + generations.ToString();
         }
 
-        private void UpdateLivingText()
+        private int GetLivingCount()
         {
             int living = 0;
             for (int y = 0; y < universe.GetLength(1); y++)
             {
                 for (int x = 0; x < universe.GetLength(0); x++)
                 {
-                    if(universe[x,y])
+                    if (universe[x, y])
                     {
                         living++;
                     }
                 }
             }
+            return living;
+        }
 
-            toolStripStatusLabelLiving.Text = "Living = " + living.ToString();
+        private void UpdateLivingText()
+        {
+            toolStripStatusLabelLiving.Text = "Living = " + GetLivingCount().ToString();
         }
 
         private int CheckNeighbor(int x, int y)
@@ -249,7 +266,7 @@ namespace InlowLukeGOL
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            this.Close();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -318,9 +335,9 @@ namespace InlowLukeGOL
             this.scratchPad = new bool[w, h];
 
             // Comments should be at the beginning of the file
-            for(int y = comments; y < h; y++)
+            for(int y = 0; y < h; y++)
             {
-                string line = result[y - comments];
+                string line = result[y + comments];
                 for(int x = 0; x < line.Length; x++)
                 {
                     if (line[x] == '.') universe[x, y] = false;
@@ -407,6 +424,8 @@ namespace InlowLukeGOL
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog color = new ColorDialog();
+            color.Color = gridColor;
+
             if (DialogResult.OK == color.ShowDialog())
             {
                 gridColor = color.Color;
@@ -417,7 +436,9 @@ namespace InlowLukeGOL
         private void fGColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog color = new ColorDialog();
-            if(DialogResult.OK == color.ShowDialog())
+            color.Color = cellColor;
+
+            if (DialogResult.OK == color.ShowDialog())
             {
                 cellColor = color.Color;
                 graphicsPanel1.Invalidate();
@@ -491,6 +512,8 @@ namespace InlowLukeGOL
         private void bGColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog color = new ColorDialog();
+            color.Color = graphicsPanel1.BackColor;
+
             if (DialogResult.OK == color.ShowDialog())
             {
                 graphicsPanel1.BackColor = color.Color;
@@ -528,6 +551,26 @@ namespace InlowLukeGOL
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenUniverse();
+        }
+
+        private void Form1_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Properties.Settings.Default.gridColor = gridColor;
+            Properties.Settings.Default.cellColor = cellColor;
+            Properties.Settings.Default.backColor = graphicsPanel1.BackColor;
+
+            Properties.Settings.Default.universeX = universeX;
+            Properties.Settings.Default.universeY = universeY;
+
+            Properties.Settings.Default.timeInterval = timeInterval;
+
+            Properties.Settings.Default.Save();
+        }
+
+        private void resetOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            loadSettings();
         }
     }
 }
