@@ -155,7 +155,7 @@ namespace InlowLukeGOL
         private void graphicsPanel1_Paint(object sender, PaintEventArgs e)
         {
             // Calculate the width and height of each cell in pixels
-            Size cellSize = new Size(graphicsPanel1.ClientSize.Width / universeX, graphicsPanel1.ClientSize.Height / universeY);
+            SizeF cellSize = new SizeF(((float)graphicsPanel1.ClientSize.Width / (float)universeX), ((float)graphicsPanel1.ClientSize.Height / (float)universeY));
             // A Pen for drawing the grid lines (color, width)
             Pen gridPen = new Pen(gridColor, 1.0f);
             // A Brush for filling living cells interiors (color)
@@ -171,7 +171,7 @@ namespace InlowLukeGOL
                 {
                     bool cell = universe[x, y];
                     // A rectangle to represent each cell in pixels
-                    Rectangle cellRect = Rectangle.Empty;
+                    RectangleF cellRect = RectangleF.Empty;
                     cellRect.X = x * cellSize.Width;
                     cellRect.Y = y * cellSize.Height;
                     cellRect.Size = cellSize;
@@ -208,17 +208,17 @@ namespace InlowLukeGOL
             if (e.Button == MouseButtons.Left)
             {
                 // Calculate the width and height of each cell in pixels
-                int cellWidth = graphicsPanel1.ClientSize.Width / universe.GetLength(0);
-                int cellHeight = graphicsPanel1.ClientSize.Height / universe.GetLength(1);
+                float cellWidth = (float)graphicsPanel1.ClientSize.Width / (float)universe.GetLength(0);
+                float cellHeight = (float)graphicsPanel1.ClientSize.Height / (float)universe.GetLength(1);
 
                 // Calculate the cell that was clicked in
                 // CELL X = MOUSE X / CELL WIDTH
-                int x = e.X / cellWidth;
+                float x = e.X / cellWidth;
                 // CELL Y = MOUSE Y / CELL HEIGHT
-                int y = e.Y / cellHeight;
+                float y = e.Y / cellHeight;
 
                 // Toggle the cell's state
-                universe[x, y] = !universe[x, y];
+                universe[(int)x, (int)y] = !universe[(int)x, (int)y];
                 UpdateLivingText();
 
                 // Tell Windows you need to repaint
