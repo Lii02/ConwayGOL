@@ -25,16 +25,8 @@ namespace InlowLukeGOL
 
             // Set initial numeric values
             numericUpDown4.Value = universeX;
-            numericUpDown4.Maximum = 250;
-            numericUpDown4.Minimum = 4;
-            
             numericUpDown3.Value = universeY;
-            numericUpDown3.Maximum = 250;
-            numericUpDown3.Minimum = 4;
-
             numericUpDown1.Value = timeInterval;
-            numericUpDown1.Maximum = 10000;
-            numericUpDown1.Minimum = 1;
         }
 
         private void numericUpDown4_ValueChanged(object sender, EventArgs e)

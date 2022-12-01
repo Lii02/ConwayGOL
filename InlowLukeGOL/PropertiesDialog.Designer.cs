@@ -44,6 +44,11 @@ namespace InlowLukeGOL
             // numericUpDown3
             // 
             this.numericUpDown3.Location = new System.Drawing.Point(94, 55);
+            this.numericUpDown3.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown3.TabIndex = 0;
@@ -52,6 +57,11 @@ namespace InlowLukeGOL
             // numericUpDown4
             // 
             this.numericUpDown4.Location = new System.Drawing.Point(94, 29);
+            this.numericUpDown4.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
             this.numericUpDown4.Name = "numericUpDown4";
             this.numericUpDown4.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown4.TabIndex = 0;
@@ -97,6 +107,11 @@ namespace InlowLukeGOL
             // numericUpDown1
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(94, 83);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            5000,
+            0,
+            0,
+            0});
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown1.TabIndex = 5;
